@@ -1,6 +1,6 @@
 # 🌳 Merkle Tree
 
-The **simple and easy** implementation of **Python Merkle Tree**
+The **simple and easy** implementation of **Rust Merkle Tree**
 
 ---
 
