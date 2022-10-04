@@ -50,7 +50,7 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 
 **Create a Merkle Tree**
 
-```rs
+```rust
 use merkletreers::mtree::MerkleTree;
 
 let tree = MerkleTree::new(vec![
