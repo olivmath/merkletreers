@@ -54,24 +54,37 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 use merkletreers::mtree::MerkleTree;
 
 let tree = MerkleTree::new(vec![
-    "a".to_string(),
-    "b".to_string(),
-    "c".to_string(),
-    "d".to_string(),
+    "a".into(),
+    "b".into(),
+    "c".into(),
+    "d".into(),
 ]);
 
 assert_eq!(tree.leafs(), [
-    "3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb".to_string(),
-    "b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510".to_string(),
-    "0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2".to_string(),
-    "f1918e8562236eb17adc8502332f4c9c82bc14e19bfc0aa10ab674ff75b3d2f3".to_string()
+    "3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb".into(),
+    "b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510".into(),
+    "0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2".into(),
+    "f1918e8562236eb17adc8502332f4c9c82bc14e19bfc0aa10ab674ff75b3d2f3".into(),
 ])
 ```
 
 
 **Create a Root**
 
-```rs
+```rust
+use merkletreers::mtree::MerkleTree;
+
+let tree = MerkleTree::new(vec![
+    "a".into(),
+    "b".into(),
+    "c".into(),
+    "d".into(),
+]);
+
+assert_eq!(
+    tree.root(),
+    "115cbb4775ed495f3d954dfa47164359a97762b40059d9502895def16eed609c".into()
+);
 ```
 
 **Create Proof of a leaf**
