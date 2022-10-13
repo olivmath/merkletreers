@@ -83,7 +83,7 @@ let tree = MerkleTree::new(vec![
 
 assert_eq!(
     tree.root(),
-    "115cbb4775ed495f3d954dfa47164359a97762b40059d9502895def16eed609c".into()
+    vec!["115cbb4775ed495f3d954dfa47164359a97762b40059d9502895def16eed609c".into()],
 );
 ```
 
