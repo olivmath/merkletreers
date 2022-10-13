@@ -4,7 +4,7 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 ---
 
-[![CodeQL](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml) [![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml)
+[![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml)
 
 [![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
 
