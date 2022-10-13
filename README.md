@@ -4,16 +4,15 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 ---
 
-<!-- [![CodeQL](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml)
-[![Lint](https://github.com/olivmath/merkly/actions/workflows/lint.yml/badge.svg)](https://github.com/olivmath/merkly/actions/workflows/lint.yml)
-[![Test](https://github.com/olivmath/merkly/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkly/actions/workflows/test.yml)
-[![PyPI](https://img.shields.io/pypi/v/merkly)](https://pypi.org/project/merkly/)
+[![CodeQL](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/olivmath/merkly/actions/workflows/codeql-analysis.yml) [![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/olivmath/merkly)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/olivmath/merkly)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/merkly)](https://pypi.org/project/merkly/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/merkly)](https://pypi.org/project/merkly/)
-![PyPI - License](https://img.shields.io/pypi/l/merkly) -->
+[![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/olivmath/merkletreers)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/olivmath/merkletreers)
+
+![Crates.io](https://img.shields.io/crates/l/merkletreers)
+
 
 ## Table of Contents
 
