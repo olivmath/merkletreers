@@ -68,7 +68,7 @@ assert_eq!(tree.leafs(), [
 ```rust
 use merkletreers::mtree::MerkleTree;
 
-let tree = MerkleTree::new(vvec!["a","b","c","d"]);
+let tree = MerkleTree::new(vec!["a","b","c","d"]);
 
 assert_eq!(
     tree.root(),
