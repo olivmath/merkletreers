@@ -1,6 +1,6 @@
 [package]
 name = "merkletreers"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 description = "🌳 The simple and easy implementation of Merkle Tree"
 authors = ["Lucas Oliveira <olivmath@protonmail.com>"]

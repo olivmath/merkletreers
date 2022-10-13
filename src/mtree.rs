@@ -1,55 +1,68 @@
 use crate::utils::is_power_2;
 
-pub type Leaf = Vec<u8>;
+pub type Leaf = String;
+pub type Root = String;
 
 /// # 🍃 Leaf of Tree
 pub struct Node {
     pub right: Option<Leaf>,
-    pub left: Vec<Leaf>,
+    pub left: Option<Leaf>,
 }
 
 /// # 🌳 Merkle Tree
-/// - You can passa raw data
+/// - You can pass raw data
 /// - They will hashed by `keccak-256`
+#[derive(Debug)]
 pub struct MerkleTree {
-    root: Option<Leaf>,
-    leafs: Vec<Leaf>,
+    pub leafs: Vec<Leaf>,
+    pub root: Root,
 }
 
 impl MerkleTree {
-    pub fn new(leafs: Vec<String>) -> Self {
-        is_power_2(leafs.len() as u32);
-        MerkleTree {
-            root: None,
-            leafs: Self::hash_leaf(leafs),
+    pub fn new(leafs: Vec<&str>) -> Self {
+        match is_power_2(leafs.len() as u32) {
+            true => MerkleTree {
+                leafs: leafs
+                    .iter()
+                    .map(|i| MerkleTree::to_keccak256(i.to_string()))
+                    .collect(),
+                root: MerkleTree::make_root(
+                    leafs
+                        .iter()
+                        .map(|i| MerkleTree::to_keccak256(i.to_string()))
+                        .collect(),
+                ),
+            },
+            false => {
+                panic!("{} is not a power-2 leaf", leafs.len())
+            }
         }
     }
 
-    fn hash_leaf(leaf: Vec<String>) -> Vec<Leaf> {
-        fn to_keccak256(message: Vec<u8>) -> Vec<u8> {
-            use tiny_keccak::{Hasher, Keccak};
+    fn make_root(leafs: Vec<Leaf>) -> String {
+        if leafs.len() == 1 {
+            return leafs[0].to_owned();
+        } else {
+            let mut new_leafs: Vec<String> = vec![];
 
-            let mut k256 = Keccak::v256();
-            let mut result = [0; 32];
-
-            k256.update(&message);
-            k256.finalize(&mut result);
-
-            result.to_vec()
+            for i in leafs.chunks(2) {
+                new_leafs.push(MerkleTree::to_keccak256(i.concat()));
+            }
+            return MerkleTree::make_root(new_leafs);
         }
-        leaf.into_iter().map(|leaf| to_keccak256(leaf.as_bytes().to_vec())).collect()
     }
 }
 
 impl MerkleTree {
-    pub fn leafs(&self) -> Vec<String> {
-        self.leafs.iter().map(|leaf| hex::encode(leaf)).collect()
-    }
+    pub fn to_keccak256(message: String) -> Leaf {
+        use tiny_keccak::{Hasher, Keccak};
 
-    pub fn root(&self) -> String {
-        match &self.root {
-            Some(root) => hex::encode(root),
-            None => hex::encode(Vec::new()),
-        }
+        let mut k256 = Keccak::v256();
+        let mut result = [0; 32];
+
+        k256.update(message.as_bytes());
+        k256.finalize(&mut result);
+
+        hex::encode(result)
     }
 }
