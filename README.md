@@ -4,9 +4,7 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 ---
 
-[![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml)
-
-[![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
+[![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml) [![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
 
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/olivmath/merkletreers)
