@@ -1,2 +1,2 @@
-pub mod mtree;
+pub mod merkletree;
 pub mod utils;
