@@ -50,7 +50,7 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 **Create a Merkle Tree**
 
 ```rust
-use merkletreers::mtree::MerkleTree;
+use merkletreers::merkletree::tree::MerkleTree;
 
 let tree = MerkleTree::new(vec!["a","b","c","d"]);
 
@@ -66,7 +66,7 @@ assert_eq!(tree.leafs(), [
 **Create a Root**
 
 ```rust
-use merkletreers::mtree::MerkleTree;
+use merkletreers::merkletree::tree::MerkleTree;
 
 let tree = MerkleTree::new(vec!["a","b","c","d"]);
 
@@ -77,11 +77,22 @@ assert_eq!(
 ```
 
 **Create Proof of a leaf**
-```rs
+```rust
+use merkletreers::merkletree::{tree::MerkleTree, node::Node};
+
+let mtree = MerkleTree::new(vec!["a", "b", "c", "d"]);
+assert_eq!(
+    mtree.proof("a"),
+    vec![
+        Node::left("3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb"),
+        Node::right("b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"),
+        Node::right("64673cf40035df6d3a0d0143cc8426de49b9a93b9ad2d330cb4f0bc390a86d20")
+    ]
+);
 ```
 
 **Verify Proof of a leaf**
-```rs
+```rust
 ```
 
 
@@ -90,7 +101,7 @@ assert_eq!(
 | Feature | Status | Priority |
 |-|-|-|
 | Create Root | ✅ | 🔥 |
-| Create Proof | ⏰ | 🔥 |
+| Create Proof | ✅ | 🔥 |
 | Verify Proof | ⏰ | 🔥 |
 | Support **[OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/utilities#verifying_merkle_proofs)** | ⏰ | 🔥 |
 | Compatible with **[MerkleTreeJs](https://github.com/miguelmota/merkletreejs)** | ⏰ | 🔥 |
