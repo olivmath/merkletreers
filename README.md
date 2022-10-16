@@ -30,10 +30,10 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 ## How to install
 
 ```toml
-#Cargo.toml
+# Cargo.toml
 
 [dependencies]
-merkletreers = "0.4.0"
+merkletreers = "*"
 ```
 
 ## How to works
