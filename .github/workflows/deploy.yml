@@ -10,20 +10,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Tests
+    - name: Build
       run: cargo build --release
 
-  tests:
+  test:
     needs: [build]
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Tests
+    - name: Test
       run: cargo test
 
   deploy:
-    needs: [build, tests]
+    needs: [build, test]
     runs-on: ubuntu-latest
 
     steps:
