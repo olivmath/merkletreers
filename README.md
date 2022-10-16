@@ -8,6 +8,7 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 [![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
 
+
 ![GitHub last commit](https://img.shields.io/github/last-commit/olivmath/merkletreers)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/olivmath/merkletreers)
 
@@ -30,6 +31,12 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 ## How to install
 
+```toml
+#Cargo.toml
+
+[dependencies]
+merkletreers = "0.4.0"
+```
 
 ## How to works
 
