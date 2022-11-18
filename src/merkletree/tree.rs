@@ -4,7 +4,7 @@ use super::{node::Node, Leaf, Root};
 /// # 🌳 Merkle Tree
 /// - You can pass raw data
 /// - They will hashed by `keccak-256`
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MerkleTree {
     pub leafs: Vec<Leaf>,
     pub root: Root,
