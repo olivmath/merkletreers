@@ -1,4 +1,4 @@
-use crate::utils2::{hash_function, Node};
+use crate::utils::{hash_function, Node};
 
 pub fn merkle_proof_check(proof: Vec<Node>, leaf: [u8; 32]) -> [u8; 32] {
     let mut current_hash = leaf;
@@ -27,7 +27,8 @@ mod tests {
     mod merkle_proof_check_leaves_odd {}
 
     mod merkle_proof_check_leaves_base_2 {
-        use crate::utils2::{Node, Side};
+
+        use crate::utils::{Node, Side};
 
         use super::merkle_proof_check;
 

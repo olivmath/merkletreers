@@ -1,4 +1,4 @@
-use crate::{merkle_root::merkle_root, utils2::Node};
+use crate::{merkle_root::merkle_root, utils::Node};
 
 pub fn merkle_proof(leaves: &[[u8; 32]], leaf: [u8; 32]) -> Vec<Node> {
     let mut proof: Vec<Node> = Vec::new();
@@ -84,7 +84,8 @@ mod tests {
     mod merkle_proof_leaves_odd {}
 
     mod merkle_proof_leaves_base_2 {
-        use crate::utils2::{Node, Side};
+
+        use crate::utils::{Node, Side};
 
         use super::merkle_proof;
 

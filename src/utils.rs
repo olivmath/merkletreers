@@ -1,4 +1,5 @@
 use super::merkletree::Leaf;
+use tiny_keccak::{Hasher, Keccak};
 
 /// # Verify if `x: int` is power of 2
 /// - params `x: int`
@@ -47,8 +48,6 @@ pub fn is_power_2(number: u32) -> bool {
 /// );
 /// ```
 pub fn to_keccak256(message: String) -> Leaf {
-    use tiny_keccak::{Hasher, Keccak};
-
     let mut k256 = Keccak::v256();
     let mut result = [0; 32];
 
@@ -81,4 +80,40 @@ pub fn half<T: std::clone::Clone>(arr: &Vec<T>) -> (Vec<T>, Vec<T>) {
     let right = &arr[m..];
 
     (left.to_vec(), right.to_vec())
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub enum Side {
+    LEFT = 0,
+    RIGHT = 1,
+}
+impl From<u8> for Side {
+    fn from(num: u8) -> Self {
+        match num {
+            0 => Side::LEFT,
+            1 => Side::RIGHT,
+            _ => panic!("Invalid value for Side enum, must be either `0` or `1`"),
+        }
+    }
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub struct Node {
+    pub data: [u8; 32],
+    pub side: Side,
+}
+
+pub fn hash_it(data: &[u8], buffer: &mut [u8; 32]) {
+    let mut k256 = Keccak::v256();
+
+    k256.update(data);
+    k256.finalize(buffer);
+}
+
+pub fn hash_function(left: &[u8; 32], right: &[u8; 32], buffer: &mut [u8; 32]) {
+    let mut concat = [0u8; 64];
+    concat[..32].copy_from_slice(left);
+    concat[32..].copy_from_slice(right);
+
+    hash_it(&concat, buffer)
 }
