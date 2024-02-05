@@ -1,4 +1,4 @@
-use crate::utils2::hash_function;
+use crate::utils::hash_function;
 
 pub fn merkle_root(leaves: &[[u8; 32]]) -> [u8; 32] {
     let mut node = [0u8; 32];

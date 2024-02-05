@@ -87,8 +87,9 @@ impl MerkleTree {
 
 impl MerkleTree {
     pub fn proof(self, leaf: &str) -> Vec<Node> {
-        let mut proof = MerkleTree::make_proof(self.leafs, to_keccak256(leaf.to_string()), &mut vec![]);
+        let mut proof =
+            MerkleTree::make_proof(self.leafs, to_keccak256(leaf.to_string()), &mut vec![]);
         proof.reverse();
-        return proof
+        return proof;
     }
 }
