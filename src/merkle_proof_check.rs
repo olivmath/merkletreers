@@ -1,7 +1,7 @@
 use crate::utils::hash_function;
-use crate::Proof;
+use crate::{Leaf, Proof};
 
-pub fn merkle_proof_check(proof: Proof, leaf: [u8; 32]) -> [u8; 32] {
+pub fn merkle_proof_check(proof: Proof, leaf: Leaf) -> Leaf {
     let mut current_hash = leaf;
 
     for node in proof {

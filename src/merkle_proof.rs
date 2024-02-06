@@ -7,7 +7,7 @@ use crate::{Leaf, Proof};
 pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
     let mut proof: Proof = Vec::new();
 
-    if is_power_of_two(leaves.len() as u32) == false {
+    if !is_power_of_two(leaves.len() as u32) {
         return merkle_proof_mixed_tree(leaves, leaf);
     }
 

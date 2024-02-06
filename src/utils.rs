@@ -20,6 +20,5 @@ pub fn is_power_of_two(number: u32) -> bool {
     let left: bool = number & (number - 1) == 0;
     let right: bool = number != 0;
 
-    let r = left && right;
-    r
+    left && right
 }
