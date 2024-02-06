@@ -6,12 +6,10 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 [![Build](https://github.com/olivmath/merkletreers/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/build.yml) [![Test](https://github.com/olivmath/merkletreers/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/olivmath/merkletreers/actions/workflows/test.yml) [![Crates.io](https://img.shields.io/crates/v/merkletreers.svg)](https://crates.io/crates/merkletreers)
 
-
 ![GitHub last commit](https://img.shields.io/github/last-commit/olivmath/merkletreers)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/olivmath/merkletreers)
 
 ![Crates.io](https://img.shields.io/crates/l/merkletreers)
-
 
 ## Table of Contents
 
@@ -38,7 +36,7 @@ merkletreers = "*"
 
 ## How to works
 
-- *We use keccak-256 under-the-hood*
+- _We use keccak-256 under-the-hood_
 
 This library provides a clean and easy to use implementation of the Merkle Tree with the following features:
 
@@ -47,7 +45,6 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 - Create Proof
 - Verify Proof
 
-
 ![](/asset.png)
 
 ## How to Use
@@ -55,63 +52,195 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 **Create a Merkle Tree**
 
 ```rust
-use merkletreers::merkletree::tree::MerkleTree;
+use merkletreers::tree::MerkleTree;
+use merkletreers::utils::hash_it;
 
-let tree = MerkleTree::new(vec!["a","b","c","d"]);
+// Hash each element of leaves to convert into a [u8;32]
+let leaves = ["a", "b", "c", "d", "e"]
+    .iter()
+    .map(|data| {
+        let mut buffer = [0u8; 32];
+        hash_it(data.as_bytes(), &mut buffer);
+        buffer
+    })
+    .collect::<Vec<[u8; 32]>>();
 
-assert_eq!(tree.leafs(), [
-    "3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb",
-    "b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510",
-    "0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2",
-    "f1918e8562236eb17adc8502332f4c9c82bc14e19bfc0aa10ab674ff75b3d2f3",
-])
+// Create our Merkle tree
+let tree = MerkleTree::new(leaves);
 ```
-
 
 **Create a Root**
 
 ```rust
-use merkletreers::merkletree::tree::MerkleTree;
+use merkletreers::tree::MerkleTree;
+use merkletreers::utils::hash_it;
 
-let tree = MerkleTree::new(vec!["a","b","c","d"]);
+// Hash each element of leaves to convert into a [u8;32]
+let leaves = ["a", "b", "c", "d", "e"]
+    .iter()
+    .map(|data| {
+        let mut buffer = [0u8; 32];
+        hash_it(data.as_bytes(), &mut buffer);
+        buffer
+    })
+    .collect::<Vec<[u8; 32]>>();
 
+// Create our Merkle tree
+let tree = MerkleTree::new(leaves);
+
+// Create our Merkle Root
+let root = tree.root;
 assert_eq!(
-    tree.root(),
-    vec!["115cbb4775ed495f3d954dfa47164359a97762b40059d9502895def16eed609c"],
-);
-```
-
-**Create Proof of a leaf**
-```rust
-use merkletreers::merkletree::{tree::MerkleTree, node::Node};
-
-let mtree = MerkleTree::new(vec!["a", "b", "c", "d"]);
-assert_eq!(
-    mtree.proof("a"),
-    vec![
-        Node::left("3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb"),
-        Node::right("b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"),
-        Node::right("64673cf40035df6d3a0d0143cc8426de49b9a93b9ad2d330cb4f0bc390a86d20")
+    root,
+    [
+        29, 208, 210, 166, 174, 70, 109, 102, 92, 178, 110, 26, 49, 240, 124, 87, 174, 93, 247,
+        210, 188, 85, 156, 213, 130, 109, 65, 123, 233, 20, 26, 93
     ]
 );
 ```
 
-**Verify Proof of a leaf**
+**Create Proof of a leaf**
+
 ```rust
+use merkletreers::node::{Node, Side};
+use merkletreers::tree::MerkleTree;
+use merkletreers::utils::hash_it;
+
+// Hash each element of leaves to convert into a [u8;32]
+let leaves = ["a", "b", "c", "d", "e"]
+    .iter()
+    .map(|data| {
+        let mut buffer = [0u8; 32];
+        hash_it(data.as_bytes(), &mut buffer);
+        buffer
+    })
+    .collect::<Vec<[u8; 32]>>();
+
+// Create our Merkle tree
+let tree = MerkleTree::new(leaves);
+
+// Create our Merkle Root
+let root = tree.root;
+assert_eq!(
+    root,
+    [
+        29, 208, 210, 166, 174, 70, 109, 102, 92, 178, 110, 26, 49, 240, 124, 87, 174, 93, 247,
+        210, 188, 85, 156, 213, 130, 109, 65, 123, 233, 20, 26, 93
+    ]
+);
+
+// Create your Merkle Proof for 'c' element
+// First we need hash element to convert into a [u8; 32]
+let mut leaf = [0u8; 32];
+hash_it("c".as_bytes(), &mut leaf);
+let proof = tree.make_proof(leaf);
+assert_eq!(
+    vec![
+        Node {
+            data: [
+                241, 145, 142, 133, 98, 35, 110, 177, 122, 220, 133, 2, 51, 47, 76, 156, 130,
+                188, 20, 225, 155, 252, 10, 161, 10, 182, 116, 255, 117, 179, 210, 243
+            ],
+            side: Side::RIGHT
+        },
+        Node {
+            data: [
+                128, 91, 33, 216, 70, 177, 137, 239, 174, 176, 55, 125, 107, 176, 210, 1, 179,
+                135, 42, 54, 62, 96, 124, 37, 8, 143, 2, 91, 12, 106, 225, 248
+            ],
+            side: Side::LEFT
+        },
+        Node {
+            data: [
+                168, 152, 44, 137, 216, 9, 135, 251, 154, 81, 14, 37, 152, 30, 233, 23, 2, 6,
+                190, 33, 175, 60, 142, 14, 179, 18, 239, 29, 51, 130, 231, 97
+            ],
+            side: Side::RIGHT
+        }
+    ],
+    proof
+);
 ```
 
+**Verify Proof of a leaf**
+
+```rust
+use merkletreers::node::{Node, Side};
+use merkletreers::tree::MerkleTree;
+use merkletreers::utils::hash_it;
+
+
+// Hash each element of leaves to convert into a [u8;32]
+let leaves = ["a", "b", "c", "d", "e"]
+    .iter()
+    .map(|data| {
+        let mut buffer = [0u8; 32];
+        hash_it(data.as_bytes(), &mut buffer);
+        buffer
+    })
+    .collect::<Vec<[u8; 32]>>();
+
+// Create our Merkle tree
+let tree = MerkleTree::new(leaves);
+
+// Create our Merkle Root
+let root = tree.root;
+assert_eq!(
+    root,
+    [
+        29, 208, 210, 166, 174, 70, 109, 102, 92, 178, 110, 26, 49, 240, 124, 87, 174, 93, 247,
+        210, 188, 85, 156, 213, 130, 109, 65, 123, 233, 20, 26, 93
+    ]
+);
+
+// Create your Merkle Proof for 'c' element
+// First we need hash element to convert into a [u8; 32]
+let mut leaf = [0u8; 32];
+hash_it("c".as_bytes(), &mut leaf);
+let proof = tree.make_proof(leaf);
+assert_eq!(
+    vec![
+        Node {
+            data: [
+                241, 145, 142, 133, 98, 35, 110, 177, 122, 220, 133, 2, 51, 47, 76, 156, 130,
+                188, 20, 225, 155, 252, 10, 161, 10, 182, 116, 255, 117, 179, 210, 243
+            ],
+            side: Side::RIGHT
+        },
+        Node {
+            data: [
+                128, 91, 33, 216, 70, 177, 137, 239, 174, 176, 55, 125, 107, 176, 210, 1, 179,
+                135, 42, 54, 62, 96, 124, 37, 8, 143, 2, 91, 12, 106, 225, 248
+            ],
+            side: Side::LEFT
+        },
+        Node {
+            data: [
+                168, 152, 44, 137, 216, 9, 135, 251, 154, 81, 14, 37, 152, 30, 233, 23, 2, 6,
+                190, 33, 175, 60, 142, 14, 179, 18, 239, 29, 51, 130, 231, 97
+            ],
+            side: Side::RIGHT
+        }
+    ],
+    proof
+);
+
+// Verify our Merkle Proof for 'c' element
+let result = tree.check_proof(proof, leaf);
+assert_eq!(result, root);
+```
 
 ## Roadmap
 
-| Feature | Status | Priority |
-|-|-|-|
-| Create Root | ✅ | 🔥 |
-| Create Proof | ✅ | 🔥 |
-| Verify Proof | ⏰ | 🔥 |
-| Support **[OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/utilities#verifying_merkle_proofs)** | ⏰ | 🔥 |
-| Compatible with **[MerkleTreeJs](https://github.com/miguelmota/merkletreejs)** | ⏰ | 🔥 |
-| Use any Hash function | ⏰ | 🧐 |
-| Leafs of any size | ⏰ | 🧐 |
+| Feature                                                                        | Status | Priority |
+| ------------------------------------------------------------------------------ | ------ | -------- |
+| Create Root                                                                    | ✅     | 🔥       |
+| Create Proof                                                                   | ✅     | 🔥       |
+| Verify Proof                                                                   | ✅     | 🔥       |
+| Compatible with **[MerkleTreeJs](https://github.com/miguelmota/merkletreejs)** | ✅     | 🔥       |
+| Compatible with **[Merkly](https://github.com/olivmath/merkly)**               | ✅     | 🔥       |
+| Leafs of any size                                                              | ✅     | 🧐       |
+| Use any Hash function                                                          | ⏰     | 🧐       |
 
 ## Contributing
 
