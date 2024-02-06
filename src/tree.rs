@@ -1,7 +1,8 @@
 use crate::merkle_proof::merkle_proof;
+use crate::merkle_proof_check::merkle_proof_check;
 use crate::merkle_root::merkle_root;
 use crate::node::Node;
-use crate::{Leaf, Root};
+use crate::{Leaf, Proof, Root};
 
 /// # 🌳 Merkle Tree
 /// - You can pass raw data
@@ -21,7 +22,7 @@ impl MerkleTree {
 }
 
 impl MerkleTree {
-    pub fn make_proof(self, leaf: Leaf) -> Vec<Node> {
+    pub fn make_proof(&self, leaf: Leaf) -> Vec<Node> {
         merkle_proof(&self.leaves, leaf)
     }
 }
