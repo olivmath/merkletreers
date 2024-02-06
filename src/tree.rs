@@ -26,3 +26,9 @@ impl MerkleTree {
         merkle_proof(&self.leaves, leaf)
     }
 }
+
+impl MerkleTree {
+    pub fn check_proof(self, proof: Proof, leaf: Leaf) -> Leaf {
+        merkle_proof_check(proof, leaf)
+    }
+}
