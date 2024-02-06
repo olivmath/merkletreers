@@ -27,11 +27,8 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 
 ## How to install
 
-```toml
-# Cargo.toml
-
-[dependencies]
-merkletreers = "*"
+```shell
+cargo add merkletreers
 ```
 
 ## How to works
