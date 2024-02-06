@@ -1,3 +1,4 @@
+use crate::merkle_proof_mixed::merkle_proof_mixed_tree;
 use crate::merkle_root::merkle_root;
 use crate::node::Node;
 use crate::utils::is_power_of_two;
@@ -5,6 +6,10 @@ use crate::{Leaf, Proof};
 
 pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
     let mut proof: Proof = Vec::new();
+
+    if is_power_of_two(leaves.len() as u32) == false {
+        return merkle_proof_mixed_tree(leaves, leaf);
+    }
 
     let mut current_leaves = leaves;
     while current_leaves.len() > 1 {
