@@ -1,12 +1,13 @@
 use crate::utils::hash_function;
+use crate::{Hash, Leaf, Root};
 
-pub fn merkle_root(leaves: &[[u8; 32]]) -> [u8; 32] {
-    let mut node = [0u8; 32];
+pub fn merkle_root(leaves: &[Leaf]) -> Root {
+    let mut node: Hash = [0u8; 32];
 
     let mut tmp = leaves.to_vec();
 
     while tmp.len() > 1 {
-        let mut next_level: Vec<[u8; 32]> = vec![];
+        let mut next_level: Vec<Leaf> = vec![];
 
         for leaf_pair in tmp.chunks(2) {
             match leaf_pair {
