@@ -1,2 +1,3 @@
-pub mod test_mtree;
-pub mod test_utils;
+pub mod test_merkle_proof;
+pub mod test_merkle_proof_check;
+pub mod test_merkle_root;
