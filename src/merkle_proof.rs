@@ -1,7 +1,10 @@
-use crate::{merkle_root::merkle_root, utils::Node};
+use crate::merkle_root::merkle_root;
+use crate::node::Node;
+use crate::utils::is_power_of_two;
+use crate::{Leaf, Proof};
 
-pub fn merkle_proof(leaves: &[[u8; 32]], leaf: [u8; 32]) -> Vec<Node> {
-    let mut proof: Vec<Node> = Vec::new();
+pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
+    let mut proof: Proof = Vec::new();
 
     let mut current_leaves = leaves;
     while current_leaves.len() > 1 {
