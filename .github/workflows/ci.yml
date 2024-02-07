@@ -16,7 +16,7 @@ jobs:
         run: cargo build --release
 
   merkle_root:
-    depends-on: ["build_merkletreers_library"]
+    needs: ["build_merkletreers_library"]
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: cargo test merkle_root
 
   merkle_proof:
-    depends-on: ["build_merkletreers_library"]
+    needs: ["build_merkletreers_library"]
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: cargo test merkle_proof
 
   merkle_proof_check:
-    depends-on: ["build_merkletreers_library"]
+    needs: ["build_merkletreers_library"]
     runs-on: ubuntu-latest
 
     steps:
