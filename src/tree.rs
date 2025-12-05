@@ -19,6 +19,31 @@ impl MerkleTree<Keccak256Hasher> {
     pub fn new(leaves: Vec<Leaf>) -> Self {
         Self::new_with_hasher(leaves, Keccak256Hasher)
     }
+
+    /// Verify a Merkle proof without needing a tree instance
+    ///
+    /// # Arguments
+    /// * `proof` - The Merkle proof to verify
+    /// * `leaf` - The leaf to verify
+    /// * `root` - The expected root hash
+    ///
+    /// # Returns
+    /// `true` if the proof is valid, `false` otherwise
+    ///
+    /// # Example
+    /// ```
+    /// use merkletreers::tree::MerkleTree;
+    /// use merkletreers::node::{Node, Side};
+    ///
+    /// let leaf = [0u8; 32];
+    /// let root = [0u8; 32];
+    /// let proof = vec![Node { data: [0u8; 32], side: Side::LEFT }];
+    ///
+    /// let is_valid = MerkleTree::verify_proof(proof, leaf, root);
+    /// ```
+    pub fn verify_proof(proof: Proof, leaf: Leaf, root: Root) -> bool {
+        Self::verify_proof_with_hasher(proof, leaf, root, &Keccak256Hasher)
+    }
 }
 
 impl<H: Hashable> MerkleTree<H> {
@@ -38,5 +63,20 @@ impl<H: Hashable> MerkleTree<H> {
 
     pub fn check_proof(&self, proof: Proof, leaf: Leaf) -> Leaf {
         merkle_proof_check(proof, leaf, &self.hasher)
+    }
+
+    /// Verify a Merkle proof with a custom hasher without needing a tree instance
+    ///
+    /// # Arguments
+    /// * `proof` - The Merkle proof to verify
+    /// * `leaf` - The leaf to verify
+    /// * `root` - The expected root hash
+    /// * `hasher` - The hasher to use for verification
+    ///
+    /// # Returns
+    /// `true` if the proof is valid, `false` otherwise
+    pub fn verify_proof_with_hasher(proof: Proof, leaf: Leaf, root: Root, hasher: &H) -> bool {
+        let computed_root = merkle_proof_check(proof, leaf, hasher);
+        computed_root == root
     }
 }

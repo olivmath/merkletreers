@@ -1,6 +1,7 @@
 use merkletreers::hasher::Keccak256Hasher;
 use merkletreers::merkle_proof_check::merkle_proof_check;
 use merkletreers::node::{Node, Side};
+use merkletreers::tree::MerkleTree;
 use merkletreers::{Leaf, Root};
 
 #[cfg(test)]
@@ -125,6 +126,72 @@ mod tests {
             let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
+        }
+    }
+
+    mod verify_proof_static {
+        use super::*;
+
+        const SETUP_ROOT: Root = [
+            144, 18, 241, 225, 138, 135, 121, 13, 46, 1, 250, 172, 231, 90, 170, 202, 56, 229, 61,
+            244, 55, 205, 206, 44, 5, 82, 70, 77, 218, 74, 244, 156,
+        ];
+
+        const SETUP_LEAF: Leaf = [
+            168, 152, 44, 137, 216, 9, 135, 251, 154, 81, 14, 37, 152, 30, 233, 23, 2, 6, 190, 33,
+            175, 60, 142, 14, 179, 18, 239, 29, 51, 130, 231, 97,
+        ];
+
+        const SETUP_PROOF: [Node; 2] = [
+            Node {
+                data: [
+                    209, 232, 174, 183, 149, 0, 73, 110, 243, 220, 46, 87, 186, 116, 106, 131, 21,
+                    208, 72, 183, 166, 100, 162, 191, 148, 141, 180, 250, 145, 150, 4, 131,
+                ],
+                side: Side::RIGHT,
+            },
+            Node {
+                data: [
+                    104, 32, 63, 144, 233, 208, 125, 197, 133, 146, 89, 215, 83, 110, 135, 166,
+                    186, 157, 52, 95, 37, 82, 181, 185, 222, 41, 153, 221, 206, 156, 225, 191,
+                ],
+                side: Side::LEFT,
+            },
+        ];
+
+        const WRONG_ROOT: Root = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0,
+        ];
+
+        #[test]
+        fn verify_proof_returns_true_for_valid_proof() {
+            let result = MerkleTree::verify_proof(SETUP_PROOF.to_vec(), SETUP_LEAF, SETUP_ROOT);
+            assert!(result);
+        }
+
+        #[test]
+        fn verify_proof_returns_false_for_invalid_root() {
+            let result = MerkleTree::verify_proof(SETUP_PROOF.to_vec(), SETUP_LEAF, WRONG_ROOT);
+            assert!(!result);
+        }
+
+        #[test]
+        fn verify_proof_returns_false_for_wrong_leaf() {
+            let wrong_leaf: Leaf = [0u8; 32];
+            let result = MerkleTree::verify_proof(SETUP_PROOF.to_vec(), wrong_leaf, SETUP_ROOT);
+            assert!(!result);
+        }
+
+        #[test]
+        fn verify_proof_with_hasher_works() {
+            let result = MerkleTree::verify_proof_with_hasher(
+                SETUP_PROOF.to_vec(),
+                SETUP_LEAF,
+                SETUP_ROOT,
+                &Keccak256Hasher,
+            );
+            assert!(result);
         }
     }
 }
