@@ -227,6 +227,33 @@ let result = tree.check_proof(proof, leaf);
 assert_eq!(result, root);
 ```
 
+## Important Notes
+
+### Duplicate Leaves
+
+The library handles duplicate leaves (same hash value at different positions) but with some limitations:
+
+- ✅ **Root generation works correctly** - duplicates are treated as independent nodes
+- ⚠️ **Proof generation always targets the FIRST occurrence** - cannot generate proofs for 2nd, 3rd, etc. occurrences
+- ✅ **Proof verification works correctly** - generated proofs are mathematically valid
+
+**Recommendation**: Avoid duplicate leaves when possible. If you need to include duplicate values, consider adding position/index information to make them unique:
+
+```rust
+// Instead of duplicates
+let data = ["a", "b", "a", "c"];
+
+// Make them unique by including position
+let data_with_index = [
+    ("a", 0),
+    ("b", 1),
+    ("a", 2),  // Now unique!
+    ("c", 3),
+];
+```
+
+See [ISSUE_11_FINDINGS.md](ISSUE_11_FINDINGS.md) for detailed investigation results.
+
 ## Roadmap
 
 | Feature                                                                        | Status | Priority |
