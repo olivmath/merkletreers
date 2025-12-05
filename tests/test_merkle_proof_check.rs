@@ -1,3 +1,4 @@
+use merkletreers::hasher::Keccak256Hasher;
 use merkletreers::merkle_proof_check::merkle_proof_check;
 use merkletreers::node::{Node, Side};
 use merkletreers::{Leaf, Root};
@@ -38,7 +39,7 @@ mod tests {
 
         #[test]
         fn merkle_proof_check_leaves_even_make_proof() {
-            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF);
+            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }
@@ -83,7 +84,7 @@ mod tests {
 
         #[test]
         fn merkle_proof_check_leaves_odd_make_proof() {
-            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF);
+            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }
@@ -121,7 +122,7 @@ mod tests {
 
         #[test]
         fn merkle_proof_check_leaves_base_2_make_proof() {
-            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF);
+            let result = merkle_proof_check(SETUP_PROOF.to_vec(), SETUP_LEAF, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }

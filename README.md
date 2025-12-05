@@ -31,9 +31,9 @@ The **simple and easy** implementation of **Rust Merkle Tree**
 cargo add merkletreers
 ```
 
-## How to works
+## How it works
 
-- _We use keccak-256 under-the-hood_
+- _By default, we use keccak-256, but you can use any hash function you want!_
 
 This library provides a clean and easy to use implementation of the Merkle Tree with the following features:
 
@@ -41,6 +41,7 @@ This library provides a clean and easy to use implementation of the Merkle Tree 
 - Create Root
 - Create Proof
 - Verify Proof
+- Use custom hash functions
 
 ![](/asset.png)
 
@@ -227,32 +228,41 @@ let result = tree.check_proof(proof, leaf);
 assert_eq!(result, root);
 ```
 
-## Important Notes
+**Use a Custom Hash Function**
 
-### Duplicate Leaves
-
-The library handles duplicate leaves (same hash value at different positions) but with some limitations:
-
-- ✅ **Root generation works correctly** - duplicates are treated as independent nodes
-- ⚠️ **Proof generation always targets the FIRST occurrence** - cannot generate proofs for 2nd, 3rd, etc. occurrences
-- ✅ **Proof verification works correctly** - generated proofs are mathematically valid
-
-**Recommendation**: Avoid duplicate leaves when possible. If you need to include duplicate values, consider adding position/index information to make them unique:
+You can implement the `Hashable` trait to use any hash function:
 
 ```rust
-// Instead of duplicates
-let data = ["a", "b", "a", "c"];
+use merkletreers::hasher::Hashable;
+use merkletreers::tree::MerkleTree;
+use sha2::{Sha256, Digest};
 
-// Make them unique by including position
-let data_with_index = [
-    ("a", 0),
-    ("b", 1),
-    ("a", 2),  // Now unique!
-    ("c", 3),
-];
+// Implement your custom hasher
+#[derive(Clone)]
+struct Sha256Hasher;
+
+impl Hashable for Sha256Hasher {
+    fn hash(&self, data: &[u8], buffer: &mut [u8; 32]) {
+        let mut hasher = Sha256::new();
+        hasher.update(data);
+        let result = hasher.finalize();
+        buffer.copy_from_slice(&result);
+    }
+}
+
+// Use your custom hasher
+let hasher = Sha256Hasher;
+let leaves = ["a", "b", "c", "d"]
+    .iter()
+    .map(|data| {
+        let mut buffer = [0u8; 32];
+        hasher.hash(data.as_bytes(), &mut buffer);
+        buffer
+    })
+    .collect::<Vec<[u8; 32]>>();
+
+let tree = MerkleTree::new_with_hasher(leaves, hasher);
 ```
-
-See [ISSUE_11_FINDINGS.md](ISSUE_11_FINDINGS.md) for detailed investigation results.
 
 ## Roadmap
 
@@ -264,7 +274,7 @@ See [ISSUE_11_FINDINGS.md](ISSUE_11_FINDINGS.md) for detailed investigation resu
 | Compatible with **[MerkleTreeJs](https://github.com/miguelmota/merkletreejs)** | ✅     | 🔥       |
 | Compatible with **[Merkly](https://github.com/olivmath/merkly)**               | ✅     | 🔥       |
 | Leafs of any size                                                              | ✅     | 🧐       |
-| Use any Hash function                                                          | ⏰     | 🧐       |
+| Use any Hash function                                                          | ✅     | 🧐       |
 
 ## Contributing
 

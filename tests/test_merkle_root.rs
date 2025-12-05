@@ -1,3 +1,4 @@
+use merkletreers::hasher::Keccak256Hasher;
 use merkletreers::merkle_root::merkle_root;
 use merkletreers::{Leaf, Root};
 
@@ -42,7 +43,7 @@ mod tests {
 
         #[test]
         fn test_merkle_root_leaves_even_make_root() {
-            let result = merkle_root(&SETUP_LEAVES);
+            let result = merkle_root(&SETUP_LEAVES, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }
@@ -81,7 +82,7 @@ mod tests {
 
         #[test]
         fn test_merkle_root_leaves_odd_make_root() {
-            let result = merkle_root(&SETUP_LEAVES);
+            let result = merkle_root(&SETUP_LEAVES, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }
@@ -120,7 +121,7 @@ mod tests {
 
         #[test]
         fn test_merkle_root_leaves_base_2_make_root() {
-            let result = merkle_root(&SETUP_LEAVES);
+            let result = merkle_root(&SETUP_LEAVES, &Keccak256Hasher);
 
             assert_eq!(result, SETUP_ROOT);
         }
