@@ -1,5 +1,6 @@
 use node::Node;
 
+pub mod hasher;
 pub mod merkle_proof;
 pub mod merkle_proof_check;
 pub mod merkle_proof_mixed;
@@ -12,3 +13,6 @@ pub type Proof = Vec<Node>;
 pub type Hash = [u8; 32];
 pub type Leaf = [u8; 32];
 pub type Root = [u8; 32];
+
+// Re-export the hasher types for convenience
+pub use hasher::{Hashable, Keccak256Hasher};

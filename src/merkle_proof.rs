@@ -1,14 +1,15 @@
+use crate::hasher::Hashable;
 use crate::merkle_proof_mixed::merkle_proof_mixed_tree;
 use crate::merkle_root::merkle_root;
 use crate::node::Node;
 use crate::utils::is_power_of_two;
 use crate::{Leaf, Proof};
 
-pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
+pub fn merkle_proof<H: Hashable>(leaves: &[Leaf], leaf: Leaf, hasher: &H) -> Proof {
     let mut proof: Proof = Vec::new();
 
     if !is_power_of_two(leaves.len() as u32) {
-        return merkle_proof_mixed_tree(leaves, leaf);
+        return merkle_proof_mixed_tree(leaves, leaf, hasher);
     }
 
     let mut current_leaves = leaves;
@@ -52,7 +53,7 @@ pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
         if index < half_size {
             // faça a merkle root de right
             // TODO: make root must be a async (using other thread)
-            let right_root = merkle_root(right);
+            let right_root = merkle_root(right, hasher);
 
             // faça o node passando right e 1 (direita)
             // adicione o node na lista de prova
@@ -66,7 +67,7 @@ pub fn merkle_proof(leaves: &[Leaf], leaf: Leaf) -> Proof {
             // se o index estiver em right
             // faça a merkle root de left
             // TODO: make root must be a async (using other thread)
-            let left_root = merkle_root(left);
+            let left_root = merkle_root(left, hasher);
             // faça o node passando left e 0 (esquerda)
 
             // adicione o node na lista de prova

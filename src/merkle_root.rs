@@ -1,7 +1,7 @@
-use crate::utils::hash_function;
+use crate::hasher::Hashable;
 use crate::{Hash, Leaf, Root};
 
-pub fn merkle_root(leaves: &[Leaf]) -> Root {
+pub fn merkle_root<H: Hashable>(leaves: &[Leaf], hasher: &H) -> Root {
     let mut node: Hash = [0u8; 32];
 
     let mut tmp = leaves.to_vec();
@@ -11,7 +11,7 @@ pub fn merkle_root(leaves: &[Leaf]) -> Root {
 
         for leaf_pair in tmp.chunks(2) {
             match leaf_pair {
-                [left, right] => hash_function(left, right, &mut node),
+                [left, right] => hasher.hash_nodes(left, right, &mut node),
                 [left] => node.copy_from_slice(left),
                 _ => unreachable!(),
             };
