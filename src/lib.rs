@@ -9,6 +9,9 @@ pub mod node;
 pub mod tree;
 pub mod utils;
 
+#[cfg(target_arch = "wasm32")]
+pub mod wasm;
+
 pub type Proof = Vec<Node>;
 pub type Hash = [u8; 32];
 pub type Leaf = [u8; 32];
