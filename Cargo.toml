@@ -1,6 +1,6 @@
 [package]
 name = "merkletreers"
-version = "1.4.0"
+version = "1.4.1"
 edition = "2021"
 description = "🌳 The simple and easy implementation of Merkle Tree"
 authors = ["Lucas Oliveira <olivmath@protonmail.com>"]
@@ -18,13 +18,17 @@ keywords = [
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[features]
+default = []
+wasm = ["wasm-bindgen", "serde", "serde-wasm-bindgen", "js-sys"]
+
 [dependencies]
 hex = "0.4.3"
 tiny-keccak = { version = "2.0.2", features = ["keccak"] }
-wasm-bindgen = "0.2"
-serde = { version = "1", features = ["derive"] }
-serde-wasm-bindgen = "0.6"
-js-sys = "0.3"
+wasm-bindgen = { version = "0.2", optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+serde-wasm-bindgen = { version = "0.6", optional = true }
+js-sys = { version = "0.3", optional = true }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

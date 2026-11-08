@@ -9,7 +9,7 @@ pub mod node;
 pub mod tree;
 pub mod utils;
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(feature = "wasm")]
 pub mod wasm;
 
 pub type Proof = Vec<Node>;
